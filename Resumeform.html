@@ -1,0 +1,1317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resume Builder | Input Your Details</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Global Styles */
+        :root {
+            --primary-color: #4361ee;
+            --secondary-color: #3f37c9;
+            --accent-color: #4cc9f0;
+            --light-color: #f8f9fa;
+            --dark-color: #212529;
+            --success-color: #4bb543;
+            --warning-color: #ffcc00;
+            --danger-color: #ff3333;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7ff;
+            color: var(--dark-color);
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Header Styles */
+        header {
+            padding: 20px 0;
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+        
+        .logo i {
+            margin-right: 10px;
+            font-size: 28px;
+        }
+        
+        /* Progress Bar */
+        .progress-container {
+            margin: 100px auto 40px;
+            width: 100%;
+            max-width: 800px;
+        }
+        
+        .progress-bar {
+            display: flex;
+            justify-content: space-between;
+            position: relative;
+            margin-bottom: 30px;
+        }
+        
+        .progress-bar::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background-color: #e0e0e0;
+            transform: translateY(-50%);
+            z-index: -1;
+        }
+        
+        .progress {
+            position: absolute;
+            top: 50%;
+            left: 0;
+            height: 4px;
+            background-color: var(--primary-color);
+            transform: translateY(-50%);
+            z-index: -1;
+            transition: width 0.4s ease;
+        }
+        
+        .step {
+            width: 40px;
+            height: 40px;
+            background-color: white;
+            border: 3px solid #e0e0e0;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: #999;
+            transition: all 0.4s ease;
+        }
+        
+        .step.active {
+            border-color: var(--primary-color);
+            color: var(--primary-color);
+        }
+        
+        .step.completed {
+            border-color: var(--success-color);
+            background-color: var(--success-color);
+            color: white;
+        }
+        
+        .step-labels {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+        }
+        
+        .step-label {
+            font-size: 14px;
+            color: #999;
+            text-align: center;
+            width: 100px;
+        }
+        
+        .step-label.active {
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+        
+        /* Form Container */
+        .form-container {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            margin-bottom: 40px;
+        }
+        
+        /* Form Sections */
+        .form-section {
+            display: none;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        
+        .form-section.active {
+            display: block;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .section-title {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            color: var(--primary-color);
+            display: flex;
+            align-items: center;
+        }
+        
+        .section-title i {
+            margin-right: 10px;
+        }
+        
+        /* Form Styles */
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-row {
+            display: flex;
+            gap: 20px;
+        }
+        
+        .form-row .form-group {
+            flex: 1;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #555;
+        }
+        
+        input, textarea, select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+        
+        input:focus, textarea:focus, select:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.1);
+        }
+        
+        textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+        
+        /* Date input specific styles */
+        input[placeholder="dd-mm-yyyy"] {
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%23999' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3crect x='3' y='4' width='18' height='18' rx='2' ry='2'%3e%3c/rect%3e%3cline x1='16' y1='2' x2='16' y2='6'%3e%3c/line%3e%3cline x1='8' y1='2' x2='8' y2='6'%3e%3c/line%3e%3cline x1='3' y1='10' x2='21' y2='10'%3e%3c/line%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 10px center;
+            background-size: 20px;
+        }
+        
+        /* Dynamic Fields */
+        .dynamic-field {
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px dashed #ddd;
+        }
+        
+        .dynamic-field:last-child {
+            border-bottom: none;
+        }
+        
+        .add-btn, .remove-btn {
+            background-color: var(--light-color);
+            color: var(--dark-color);
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            display: inline-flex;
+            align-items: center;
+            transition: all 0.3s;
+            margin-top: 10px;
+        }
+        
+        .add-btn {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        .add-btn:hover {
+            background-color: var(--secondary-color);
+        }
+        
+        .remove-btn {
+            background-color: #ffebee;
+            color: var(--danger-color);
+        }
+        
+        .remove-btn:hover {
+            background-color: #ffcdd2;
+        }
+        
+        .add-btn i, .remove-btn i {
+            margin-right: 5px;
+        }
+        
+        /* Form Navigation */
+        .form-navigation {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+        }
+        
+        .btn {
+            padding: 12px 25px;
+            border-radius: 5px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: none;
+            font-size: 16px;
+        }
+        
+        .btn-prev {
+            background-color: var(--light-color);
+            color: var(--dark-color);
+        }
+        
+        .btn-prev:hover {
+            background-color: #e0e0e0;
+        }
+        
+        .btn-next {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        .btn-next:hover {
+            background-color: var(--secondary-color);
+        }
+        
+        .btn-submit {
+            background-color: var(--success-color);
+            color: white;
+        }
+        
+        .btn-submit:hover {
+            background-color: #3a9a32;
+        }
+        
+        /* Skills Section */
+        .skills-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .skill-tag {
+            background-color: #e3f2fd;
+            color: var(--primary-color);
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .skill-tag i {
+            margin-left: 8px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+        
+        .skill-input-container {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .skill-input-container input {
+            flex: 1;
+        }
+        
+        /* Responsive Styles */
+        @media (max-width: 768px) {
+            .form-row {
+                flex-direction: column;
+                gap: 0;
+            }
+            
+            .progress-bar {
+                margin-bottom: 15px;
+            }
+            
+            .step {
+                width: 30px;
+                height: 30px;
+                font-size: 14px;
+            }
+            
+            .step-label {
+                font-size: 12px;
+                width: 80px;
+            }
+            
+            .form-container {
+                padding: 20px;
+            }
+            
+            .section-title {
+                font-size: 1.3rem;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .progress-container {
+                margin: 80px auto 30px;
+            }
+            
+            .step-label {
+                display: none;
+            }
+            
+            .btn {
+                padding: 10px 20px;
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <nav>
+                <a href="#" class="logo">
+                    <i class="fas fa-file-alt"></i>
+                    ResumeCraft
+                </a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Progress Bar -->
+    <div class="container">
+        <div class="progress-container">
+            <div class="progress-bar">
+                <div class="progress" id="progress"></div>
+                <div class="step completed" data-step="1">1</div>
+                <div class="step active" data-step="2">2</div>
+                <div class="step" data-step="3">3</div>
+                <div class="step" data-step="4">4</div>
+                <div class="step" data-step="5">5</div>
+                <div class="step" data-step="6">6</div>
+            </div>
+            <div class="step-labels">
+                <div class="step-label completed">Personal Info</div>
+                <div class="step-label active">Education</div>
+                <div class="step-label">Experience</div>
+                <div class="step-label">Skills</div>
+                <div class="step-label">Projects</div>
+                <div class="step-label">Achievements</div>
+            </div>
+        </div>
+
+        <!-- Form Container -->
+        <form id="resumeForm">
+            <!-- Personal Information Section -->
+            <div class="form-section active" data-section="1">
+                <div class="form-container">
+                    <h2 class="section-title"><i class="fas fa-user"></i> Personal Information</h2>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="firstName">First Name</label>
+                            <input type="text" id="firstName" name="firstName" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="lastName">Last Name</label>
+                            <input type="text" id="lastName" name="lastName" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="profession">Profession/Title</label>
+                        <input type="text" id="profession" name="profession" placeholder="e.g. Software Engineer" required>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" id="email" name="email" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="phone">Phone Number</label>
+                            <input type="tel" id="phone" name="phone">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="address">Address</label>
+                        <input type="text" id="address" name="address">
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="city">City</label>
+                            <input type="text" id="city" name="city">
+                        </div>
+                        <div class="form-group">
+                            <label for="country">Country</label>
+                            <input type="text" id="country" name="country">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="summary">Professional Summary</label>
+                        <textarea id="summary" name="summary" placeholder="Briefly describe your professional background and skills"></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="linkedin">LinkedIn Profile</label>
+                        <input type="url" id="linkedin" name="linkedin" placeholder="https://linkedin.com/in/yourprofile">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="portfolio">Portfolio/Website</label>
+                        <input type="url" id="portfolio" name="portfolio" placeholder="https://yourwebsite.com">
+                    </div>
+                    
+                    <div class="form-navigation">
+                        <button type="button" class="btn btn-next" onclick="nextSection(1)">Next: Education <i class="fas fa-arrow-right"></i></button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Education Section -->
+            <div class="form-section" data-section="2">
+                <div class="form-container">
+                    <h2 class="section-title"><i class="fas fa-graduation-cap"></i> Education</h2>
+                    
+                    <div id="educationFields">
+                        <div class="dynamic-field" data-index="0">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="education0.institution">Institution</label>
+                                    <input type="text" id="education0.institution" name="education[0].institution" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="education0.degree">Degree/Certificate</label>
+                                    <input type="text" id="education0.degree" name="education[0].degree" required>
+                                </div>
+                            </div>
+                            
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="education0.field">Field of Study</label>
+                                    <input type="text" id="education0.field" name="education[0].field">
+                                </div>
+                                <div class="form-group">
+                                    <label for="education0.gpa">GPA (optional)</label>
+                                    <input type="text" id="education0.gpa" name="education[0].gpa" placeholder="e.g. 3.8/4.0">
+                                </div>
+                            </div>
+                            
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="education0.startDate">Start Date</label>
+                                    <input type="text" id="education0.startDate" name="education[0].startDate" placeholder="dd-mm-yyyy" required pattern="\d{2}-\d{2}-\d{4}">
+                                </div>
+                                <div class="form-group">
+                                    <label for="education0.endDate">End Date (or expected)</label>
+                                    <input type="text" id="education0.endDate" name="education[0].endDate" placeholder="dd-mm-yyyy" required pattern="\d{2}-\d{2}-\d{4}">
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="education0.description">Description (optional)</label>
+                                <textarea id="education0.description" name="education[0].description" placeholder="Honors, awards, relevant coursework, etc."></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <button type="button" class="add-btn" onclick="addEducationField()"><i class="fas fa-plus"></i> Add Another Education</button>
+                    
+                    <div class="form-navigation">
+                        <button type="button" class="btn btn-prev" onclick="prevSection(2)"><i class="fas fa-arrow-left"></i> Previous</button>
+                        <button type="button" class="btn btn-next" onclick="nextSection(2)">Next: Experience <i class="fas fa-arrow-right"></i></button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Work Experience Section -->
+            <div class="form-section" data-section="3">
+                <div class="form-container">
+                    <h2 class="section-title"><i class="fas fa-briefcase"></i> Work Experience</h2>
+                    
+                    <div id="experienceFields">
+                        <div class="dynamic-field" data-index="0">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="experience0.company">Company</label>
+                                    <input type="text" id="experience0.company" name="experience[0].company" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="experience0.position">Position</label>
+                                    <input type="text" id="experience0.position" name="experience[0].position" required>
+                                </div>
+                            </div>
+                            
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="experience0.startDate">Start Date</label>
+                                    <input type="text" id="experience0.startDate" name="experience[0].startDate" placeholder="dd-mm-yyyy" required pattern="\d{2}-\d{2}-\d{4}">
+                                </div>
+                                <div class="form-group">
+                                    <label for="experience0.endDate">End Date (or present)</label>
+                                    <input type="text" id="experience0.endDate" name="experience[0].endDate" placeholder="dd-mm-yyyy" required pattern="\d{2}-\d{2}-\d{4}">
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="experience0.description">Description</label>
+                                <textarea id="experience0.description" name="experience[0].description" required placeholder="Describe your responsibilities and achievements"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <button type="button" class="add-btn" onclick="addExperienceField()"><i class="fas fa-plus"></i> Add Another Experience</button>
+                    
+                    <div class="form-navigation">
+                        <button type="button" class="btn btn-prev" onclick="prevSection(3)"><i class="fas fa-arrow-left"></i> Previous</button>
+                        <button type="button" class="btn btn-next" onclick="nextSection(3)">Next: Skills <i class="fas fa-arrow-right"></i></button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Skills Section -->
+            <div class="form-section" data-section="4">
+                <div class="form-container">
+                    <h2 class="section-title"><i class="fas fa-code"></i> Skills</h2>
+                    
+                    <div class="form-group">
+                        <label>Technical Skills</label>
+                        <div class="skill-input-container">
+                            <input type="text" id="skillInput" placeholder="e.g. JavaScript, Photoshop, Data Analysis">
+                            <button type="button" class="btn btn-next" onclick="addSkill()">Add</button>
+                        </div>
+                        <div class="skills-container" id="technicalSkills">
+                            <!-- Skills will be added here -->
+                        </div>
+                        <input type="hidden" id="technicalSkillsList" name="technicalSkills">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Soft Skills</label>
+                        <div class="skill-input-container">
+                            <input type="text" id="softSkillInput" placeholder="e.g. Communication, Leadership, Teamwork">
+                            <button type="button" class="btn btn-next" onclick="addSoftSkill()">Add</button>
+                        </div>
+                        <div class="skills-container" id="softSkills">
+                            <!-- Skills will be added here -->
+                        </div>
+                        <input type="hidden" id="softSkillsList" name="softSkills">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="languages">Languages</label>
+                        <div class="skill-input-container">
+                            <input type="text" id="languageInput" placeholder="e.g. English (Fluent), Spanish (Intermediate)">
+                            <button type="button" class="btn btn-next" onclick="addLanguage()">Add</button>
+                        </div>
+                        <div class="skills-container" id="languagesList">
+                            <!-- Languages will be added here -->
+                        </div>
+                        <input type="hidden" id="languages" name="languages">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="tools">Tools & Technologies</label>
+                        <div class="skill-input-container">
+                            <input type="text" id="toolInput" placeholder="e.g. VS Code, Git, Photoshop">
+                            <button type="button" class="btn btn-next" onclick="addTool()">Add</button>
+                        </div>
+                        <div class="skills-container" id="toolsList">
+                            <!-- Tools will be added here -->
+                        </div>
+                        <input type="hidden" id="tools" name="tools">
+                    </div>
+                    
+                    <div class="form-navigation">
+                        <button type="button" class="btn btn-prev" onclick="prevSection(4)"><i class="fas fa-arrow-left"></i> Previous</button>
+                        <button type="button" class="btn btn-next" onclick="nextSection(4)">Next: Projects <i class="fas fa-arrow-right"></i></button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Projects Section -->
+            <div class="form-section" data-section="5">
+                <div class="form-container">
+                    <h2 class="section-title"><i class="fas fa-project-diagram"></i> Projects</h2>
+                    
+                    <div id="projectFields">
+                        <div class="dynamic-field" data-index="0">
+                            <div class="form-group">
+                                <label for="project0.name">Project Name</label>
+                                <input type="text" id="project0.name" name="project[0].name" required>
+                            </div>
+                            
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="project0.startDate">Start Date</label>
+                                    <input type="text" id="project0.startDate" name="project[0].startDate" placeholder="dd-mm-yyyy" pattern="\d{2}-\d{2}-\d{4}">
+                                </div>
+                                <div class="form-group">
+                                    <label for="project0.endDate">End Date</label>
+                                    <input type="text" id="project0.endDate" name="project[0].endDate" placeholder="dd-mm-yyyy" pattern="\d{2}-\d{2}-\d{4}">
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="project0.url">Project URL (optional)</label>
+                                <input type="url" id="project0.url" name="project[0].url" placeholder="https://">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="project0.description">Description</label>
+                                <textarea id="project0.description" name="project[0].description" required placeholder="Describe the project, your role, technologies used, and outcomes"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <button type="button" class="add-btn" onclick="addProjectField()"><i class="fas fa-plus"></i> Add Another Project</button>
+                    
+                    <div class="form-navigation">
+                        <button type="button" class="btn btn-prev" onclick="prevSection(5)"><i class="fas fa-arrow-left"></i> Previous</button>
+                        <button type="button" class="btn btn-next" onclick="nextSection(5)">Next: Achievements <i class="fas fa-arrow-right"></i></button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Achievements Section -->
+            <div class="form-section" data-section="6">
+                <div class="form-container">
+                    <h2 class="section-title"><i class="fas fa-trophy"></i> Achievements</h2>
+                    
+                    <div id="achievementFields">
+                        <div class="dynamic-field" data-index="0">
+                            <div class="form-group">
+                                <label for="achievement0.title">Achievement Title</label>
+                                <input type="text" id="achievement0.title" name="achievement[0].title" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="achievement0.date">Date (optional)</label>
+                                <input type="text" id="achievement0.date" name="achievement[0].date" placeholder="dd-mm-yyyy" pattern="\d{2}-\d{2}-\d{4}">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="achievement0.description">Description</label>
+                                <textarea id="achievement0.description" name="achievement[0].description" required placeholder="Describe your achievement and its significance"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <button type="button" class="add-btn" onclick="addAchievementField()"><i class="fas fa-plus"></i> Add Another Achievement</button>
+                    
+                    <div class="form-navigation">
+                        <button type="button" class="btn btn-prev" onclick="prevSection(6)"><i class="fas fa-arrow-left"></i> Previous</button>
+                        <button type="button" class="btn btn-submit">Generate Resume <i class="fas fa-file-download"></i></button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        // Form Navigation
+        let currentSection = 1;
+        const totalSections = 6;
+        
+        function updateProgressBar() {
+            // Update progress bar width
+            const progress = document.getElementById('progress');
+            progress.style.width = `${((currentSection - 1) / (totalSections - 1)) * 100}%`;
+            
+            // Update step indicators
+            const steps = document.querySelectorAll('.step');
+            steps.forEach(step => {
+                const stepNum = parseInt(step.getAttribute('data-step'));
+                
+                step.classList.remove('active', 'completed');
+                
+                if (stepNum < currentSection) {
+                    step.classList.add('completed');
+                } else if (stepNum === currentSection) {
+                    step.classList.add('active');
+                }
+            });
+            
+            // Update step labels
+            const stepLabels = document.querySelectorAll('.step-label');
+            stepLabels.forEach(label => {
+                const labelNum = Array.from(stepLabels).indexOf(label) + 1;
+                
+                label.classList.remove('active', 'completed');
+                
+                if (labelNum < currentSection) {
+                    label.classList.add('completed');
+                } else if (labelNum === currentSection) {
+                    label.classList.add('active');
+                }
+            });
+        }
+        
+        function showSection(sectionNum) {
+            // Hide all sections
+            document.querySelectorAll('.form-section').forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            // Show current section
+            document.querySelector(`.form-section[data-section="${sectionNum}"]`).classList.add('active');
+            
+            // Update current section
+            currentSection = sectionNum;
+            updateProgressBar();
+            
+            // Scroll to top of form
+            window.scrollTo({
+                top: document.querySelector('.progress-container').offsetTop - 20,
+                behavior: 'smooth'
+            });
+        }
+        
+        function nextSection(current) {
+            if (validateSection(current)) {
+                showSection(current + 1);
+            }
+        }
+        
+        function prevSection(current) {
+            showSection(current - 1);
+        }
+        
+        function validateSection(sectionNum) {
+            // Simple validation - check required fields
+            const section = document.querySelector(`.form-section[data-section="${sectionNum}"]`);
+            const requiredInputs = section.querySelectorAll('input[required], textarea[required], select[required]');
+            
+            let isValid = true;
+            
+            requiredInputs.forEach(input => {
+                if (!input.value.trim()) {
+                    input.style.borderColor = 'var(--danger-color)';
+                    isValid = false;
+                    
+                    // Add event listener to remove error when user starts typing
+                    input.addEventListener('input', function() {
+                        this.style.borderColor = '#ddd';
+                    }, { once: true });
+                }
+            });
+            
+            // Validate date formats
+            const dateInputs = section.querySelectorAll('input[placeholder="dd-mm-yyyy"]');
+            dateInputs.forEach(input => {
+                if (input.value && !/^\d{2}-\d{2}-\d{4}$/.test(input.value)) {
+                    input.style.borderColor = 'var(--danger-color)';
+                    isValid = false;
+                    
+                    input.addEventListener('input', function() {
+                        this.style.borderColor = '#ddd';
+                    }, { once: true });
+                }
+            });
+            
+            if (!isValid) {
+                alert('Please fill in all required fields with valid formats before proceeding.');
+                return false;
+            }
+            
+            return true;
+        }
+        
+        // Initialize progress bar
+        updateProgressBar();
+        
+        // ====== DATE HANDLING ====== //
+        function formatDateInput(input) {
+            // Remove any non-digit characters
+            let value = input.value.replace(/\D/g, '');
+            
+            // Add dashes automatically
+            if (value.length > 2) {
+                value = value.substring(0, 2) + '-' + value.substring(2);
+            }
+            if (value.length > 5) {
+                value = value.substring(0, 5) + '-' + value.substring(5, 9); // Limit to 4 digits for year
+            }
+            
+            input.value = value;
+        }
+        
+        // Add event listeners to all date inputs
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('input[placeholder="dd-mm-yyyy"]').forEach(input => {
+                input.addEventListener('input', function() {
+                    formatDateInput(this);
+                });
+                
+                input.addEventListener('blur', function() {
+                    // Validate the date format
+                    if (this.value && !/^\d{2}-\d{2}-\d{4}$/.test(this.value)) {
+                        this.setCustomValidity('Please enter date in dd-mm-yyyy format');
+                    } else {
+                        this.setCustomValidity('');
+                    }
+                });
+            });
+        });
+        
+        // ====== DYNAMIC FIELDS ====== //
+        function addEducationField() {
+            const container = document.getElementById('educationFields');
+            const index = container.children.length;
+            
+            const fieldHTML = `
+                <div class="dynamic-field" data-index="${index}">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="education${index}.institution">Institution</label>
+                            <input type="text" id="education${index}.institution" name="education[${index}].institution" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="education${index}.degree">Degree/Certificate</label>
+                            <input type="text" id="education${index}.degree" name="education[${index}].degree" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="education${index}.field">Field of Study</label>
+                            <input type="text" id="education${index}.field" name="education[${index}].field">
+                        </div>
+                        <div class="form-group">
+                            <label for="education${index}.gpa">GPA (optional)</label>
+                            <input type="text" id="education${index}.gpa" name="education[${index}].gpa" placeholder="e.g. 3.8/4.0">
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="education${index}.startDate">Start Date</label>
+                            <input type="text" id="education${index}.startDate" name="education[${index}].startDate" placeholder="dd-mm-yyyy" required pattern="\d{2}-\d{2}-\d{4}">
+                        </div>
+                        <div class="form-group">
+                            <label for="education${index}.endDate">End Date (or expected)</label>
+                            <input type="text" id="education${index}.endDate" name="education[${index}].endDate" placeholder="dd-mm-yyyy" required pattern="\d{2}-\d{2}-\d{4}">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="education${index}.description">Description (optional)</label>
+                        <textarea id="education${index}.description" name="education[${index}].description" placeholder="Honors, awards, relevant coursework, etc."></textarea>
+                    </div>
+                    
+                    <button type="button" class="remove-btn" onclick="removeField(this)"><i class="fas fa-trash"></i> Remove Education</button>
+                </div>
+            `;
+            
+            container.insertAdjacentHTML('beforeend', fieldHTML);
+            
+            // Add date formatting to new inputs
+            const newDateInputs = container.lastElementChild.querySelectorAll('input[placeholder="dd-mm-yyyy"]');
+            newDateInputs.forEach(input => {
+                input.addEventListener('input', function() {
+                    formatDateInput(this);
+                });
+            });
+        }
+        
+        function addExperienceField() {
+            const container = document.getElementById('experienceFields');
+            const index = container.children.length;
+            
+            const fieldHTML = `
+                <div class="dynamic-field" data-index="${index}">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="experience${index}.company">Company</label>
+                            <input type="text" id="experience${index}.company" name="experience[${index}].company" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="experience${index}.position">Position</label>
+                            <input type="text" id="experience${index}.position" name="experience[${index}].position" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="experience${index}.startDate">Start Date</label>
+                            <input type="text" id="experience${index}.startDate" name="experience[${index}].startDate" placeholder="dd-mm-yyyy" required pattern="\d{2}-\d{2}-\d{4}">
+                        </div>
+                        <div class="form-group">
+                            <label for="experience${index}.endDate">End Date (or present)</label>
+                            <input type="text" id="experience${index}.endDate" name="experience[${index}].endDate" placeholder="dd-mm-yyyy" required pattern="\d{2}-\d{2}-\d{4}">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="experience${index}.description">Description</label>
+                        <textarea id="experience${index}.description" name="experience[${index}].description" required placeholder="Describe your responsibilities and achievements"></textarea>
+                    </div>
+                    
+                    <button type="button" class="remove-btn" onclick="removeField(this)"><i class="fas fa-trash"></i> Remove Experience</button>
+                </div>
+            `;
+            
+            container.insertAdjacentHTML('beforeend', fieldHTML);
+            
+            // Add date formatting to new inputs
+            const newDateInputs = container.lastElementChild.querySelectorAll('input[placeholder="dd-mm-yyyy"]');
+            newDateInputs.forEach(input => {
+                input.addEventListener('input', function() {
+                    formatDateInput(this);
+                });
+            });
+        }
+        
+        function addProjectField() {
+            const container = document.getElementById('projectFields');
+            const index = container.children.length;
+            
+            const fieldHTML = `
+                <div class="dynamic-field" data-index="${index}">
+                    <div class="form-group">
+                        <label for="project${index}.name">Project Name</label>
+                        <input type="text" id="project${index}.name" name="project[${index}].name" required>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="project${index}.startDate">Start Date</label>
+                            <input type="text" id="project${index}.startDate" name="project[${index}].startDate" placeholder="dd-mm-yyyy" pattern="\d{2}-\d{2}-\d{4}">
+                        </div>
+                        <div class="form-group">
+                            <label for="project${index}.endDate">End Date</label>
+                            <input type="text" id="project${index}.endDate" name="project[${index}].endDate" placeholder="dd-mm-yyyy" pattern="\d{2}-\d{2}-\d{4}">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="project${index}.url">Project URL (optional)</label>
+                        <input type="url" id="project${index}.url" name="project[${index}].url" placeholder="https://">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="project${index}.description">Description</label>
+                        <textarea id="project${index}.description" name="project[${index}].description" required placeholder="Describe the project, your role, technologies used, and outcomes"></textarea>
+                    </div>
+                    
+                    <button type="button" class="remove-btn" onclick="removeField(this)"><i class="fas fa-trash"></i> Remove Project</button>
+                </div>
+            `;
+            
+            container.insertAdjacentHTML('beforeend', fieldHTML);
+            
+            // Add date formatting to new inputs
+            const newDateInputs = container.lastElementChild.querySelectorAll('input[placeholder="dd-mm-yyyy"]');
+            newDateInputs.forEach(input => {
+                input.addEventListener('input', function() {
+                    formatDateInput(this);
+                });
+            });
+        }
+        
+        function addAchievementField() {
+            const container = document.getElementById('achievementFields');
+            const index = container.children.length;
+            
+            const fieldHTML = `
+                <div class="dynamic-field" data-index="${index}">
+                    <div class="form-group">
+                        <label for="achievement${index}.title">Achievement Title</label>
+                        <input type="text" id="achievement${index}.title" name="achievement[${index}].title" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="achievement${index}.date">Date (optional)</label>
+                        <input type="text" id="achievement${index}.date" name="achievement[${index}].date" placeholder="dd-mm-yyyy" pattern="\d{2}-\d{2}-\d{4}">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="achievement${index}.description">Description</label>
+                        <textarea id="achievement${index}.description" name="achievement[${index}].description" required placeholder="Describe your achievement and its significance"></textarea>
+                    </div>
+                    
+                    <button type="button" class="remove-btn" onclick="removeField(this)"><i class="fas fa-trash"></i> Remove Achievement</button>
+                </div>
+            `;
+            
+            container.insertAdjacentHTML('beforeend', fieldHTML);
+            
+            // Add date formatting to new inputs
+            const newDateInputs = container.lastElementChild.querySelectorAll('input[placeholder="dd-mm-yyyy"]');
+            newDateInputs.forEach(input => {
+                input.addEventListener('input', function() {
+                    formatDateInput(this);
+                });
+            });
+        }
+        
+        function removeField(button) {
+            const field = button.closest('.dynamic-field');
+            field.remove();
+            
+            // Re-index remaining fields
+            const container = field.parentElement;
+            const fields = container.querySelectorAll('.dynamic-field');
+            
+            fields.forEach((field, index) => {
+                field.setAttribute('data-index', index);
+                
+                // Update all input names and IDs
+                const inputs = field.querySelectorAll('input, textarea, select');
+                inputs.forEach(input => {
+                    const name = input.getAttribute('name').replace(/\[\d+\]/, `[${index}]`);
+                    const id = input.getAttribute('id').replace(/\d+/, index);
+                    
+                    input.setAttribute('name', name);
+                    input.setAttribute('id', id);
+                });
+            });
+        }
+        
+        // ====== SKILLS MANAGEMENT ====== //
+        function addSkill() {
+            const input = document.getElementById('skillInput');
+            const skill = input.value.trim();
+            
+            if (skill) {
+                const container = document.getElementById('technicalSkills');
+                const skillHTML = `
+                    <div class="skill-tag">
+                        ${skill}
+                        <i class="fas fa-times" onclick="removeSkill(this)"></i>
+                    </div>
+                `;
+                
+                container.insertAdjacentHTML('beforeend', skillHTML);
+                updateSkillsList();
+                input.value = '';
+            }
+        }
+        
+        function addSoftSkill() {
+            const input = document.getElementById('softSkillInput');
+            const skill = input.value.trim();
+            
+            if (skill) {
+                const container = document.getElementById('softSkills');
+                const skillHTML = `
+                    <div class="skill-tag">
+                        ${skill}
+                        <i class="fas fa-times" onclick="removeSkill(this)"></i>
+                    </div>
+                `;
+                
+                container.insertAdjacentHTML('beforeend', skillHTML);
+                updateSoftSkillsList();
+                input.value = '';
+            }
+        }
+        
+        function addLanguage() {
+            const input = document.getElementById('languageInput');
+            const language = input.value.trim();
+            
+            if (language) {
+                const container = document.getElementById('languagesList');
+                const languageHTML = `
+                    <div class="skill-tag">
+                        ${language}
+                        <i class="fas fa-times" onclick="removeSkill(this)"></i>
+                    </div>
+                `;
+                
+                container.insertAdjacentHTML('beforeend', languageHTML);
+                updateLanguagesList();
+                input.value = '';
+            }
+        }
+        
+        function addTool() {
+            const input = document.getElementById('toolInput');
+            const tool = input.value.trim();
+            
+            if (tool) {
+                const container = document.getElementById('toolsList');
+                const toolHTML = `
+                    <div class="skill-tag">
+                        ${tool}
+                        <i class="fas fa-times" onclick="removeSkill(this)"></i>
+                    </div>
+                `;
+                
+                container.insertAdjacentHTML('beforeend', toolHTML);
+                updateToolsList();
+                input.value = '';
+            }
+        }
+        
+        function removeSkill(icon) {
+            const skillTag = icon.closest('.skill-tag');
+            skillTag.remove();
+            
+            // Update the appropriate hidden input
+            if (skillTag.parentElement.id === 'technicalSkills') {
+                updateSkillsList();
+            } else if (skillTag.parentElement.id === 'softSkills') {
+                updateSoftSkillsList();
+            } else if (skillTag.parentElement.id === 'languagesList') {
+                updateLanguagesList();
+            } else if (skillTag.parentElement.id === 'toolsList') {
+                updateToolsList();
+            }
+        }
+        
+        function updateSkillsList() {
+            const container = document.getElementById('technicalSkills');
+            const skills = Array.from(container.querySelectorAll('.skill-tag')).map(tag => 
+                tag.textContent.trim().replace('×', '').trim()
+            );
+            
+            document.getElementById('technicalSkillsList').value = skills.join(', ');
+        }
+        
+        function updateSoftSkillsList() {
+            const container = document.getElementById('softSkills');
+            const skills = Array.from(container.querySelectorAll('.skill-tag')).map(tag => 
+                tag.textContent.trim().replace('×', '').trim()
+            );
+            
+            document.getElementById('softSkillsList').value = skills.join(', ');
+        }
+        
+        function updateLanguagesList() {
+            const container = document.getElementById('languagesList');
+            const languages = Array.from(container.querySelectorAll('.skill-tag')).map(tag => 
+                tag.textContent.trim().replace('×', '').trim()
+            );
+            
+            document.getElementById('languages').value = languages.join(', ');
+        }
+        
+        function updateToolsList() {
+            const container = document.getElementById('toolsList');
+            const tools = Array.from(container.querySelectorAll('.skill-tag')).map(tag => 
+                tag.textContent.trim().replace('×', '').trim()
+            );
+            
+            document.getElementById('tools').value = tools.join(', ');
+        }
+        
+        // Allow adding skills by pressing Enter
+        document.getElementById('skillInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                addSkill();
+            }
+        });
+        
+        document.getElementById('softSkillInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                addSoftSkill();
+            }
+        });
+        
+        document.getElementById('languageInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                addLanguage();
+            }
+        });
+        
+        document.getElementById('toolInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                addTool();
+            }
+        });
+        
+        // ====== FORM SUBMISSION ====== //
+        document.querySelector('.btn-submit').addEventListener('click', function(e) {
+            e.preventDefault();
+            
+            if (validateSection(currentSection)) {
+                // Here you would typically send the form data to the server
+                // For this example, we'll just show an alert
+                
+                // Collect all form data
+                const formData = new FormData(document.getElementById('resumeForm'));
+                const data = {};
+                
+                formData.forEach((value, key) => {
+                    // Handle array-like fields (education, experience, etc.)
+                    if (key.includes('[')) {
+                        const mainKey = key.split('[')[0];
+                        const subKey = key.match(/\[(.*?)\]/)[1].replace(']', '');
+                        
+                        if (!data[mainKey]) data[mainKey] = [];
+                        
+                        // If it's a number index (like education[0].institution)
+                        if (!isNaN(subKey)) {
+                            const index = parseInt(subKey);
+                            
+                            if (!data[mainKey][index]) data[mainKey][index] = {};
+                            
+                            const propName = key.split('.')[1];
+                            data[mainKey][index][propName] = value;
+                        }
+                    } else {
+                        data[key] = value;
+                    }
+                });
+                
+                console.log('Form data:', data);
+                
+                alert('Resume generated successfully! In a real application, this would download your resume or show a preview.');
+                
+                // In a real app, you would:
+                // 1. Send data to server to generate PDF
+                // 2. Show preview or download PDF
+                // 3. Or redirect to preview page
+            }
+        });
+    </script>
+</body>
+</html>

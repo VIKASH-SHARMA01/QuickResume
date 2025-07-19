@@ -1,0 +1,1497 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ResumeCraft | Build Your Resume</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Global Styles */
+        :root {
+            --primary-color: #4361ee;
+            --secondary-color: #3f37c9;
+            --accent-color: #4cc9f0;
+            --light-color: #f8f9fa;
+            --dark-color: #212529;
+            --success-color: #4bb543;
+            --warning-color: #ffcc00;
+            --danger-color: #ff3333;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7ff;
+            color: var(--dark-color);
+            line-height: 1.6;
+        }
+        
+        /* Header Styles */
+        header {
+            padding: 20px 0;
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+        
+        .logo i {
+            margin-right: 10px;
+            font-size: 28px;
+        }
+        
+        .header-actions {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .header-btn {
+            padding: 8px 20px;
+            border-radius: 5px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 14px;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+        }
+        
+        .header-btn i {
+            margin-right: 8px;
+        }
+        
+        .btn-outline {
+            background-color: transparent;
+            border: 2px solid var(--primary-color);
+            color: var(--primary-color);
+        }
+        
+        .btn-outline:hover {
+            background-color: rgba(67, 97, 238, 0.1);
+        }
+        
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+            border: 2px solid var(--primary-color);
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--secondary-color);
+            border-color: var(--secondary-color);
+        }
+        
+        /* Main Layout */
+        .resume-builder {
+            display: flex;
+            min-height: calc(100vh - 70px);
+            margin-top: 70px;
+        }
+        
+        .form-section {
+            flex: 1;
+            padding: 30px;
+            background-color: white;
+            overflow-y: auto;
+            max-height: calc(100vh - 70px);
+        }
+        
+        .preview-section {
+            flex: 1;
+            padding: 30px;
+            background-color: #f9f9f9;
+            overflow-y: auto;
+            max-height: calc(100vh - 70px);
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+        }
+        
+        /* Form Styles */
+        .form-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .section-title {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            color: var(--primary-color);
+            display: flex;
+            align-items: center;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #eee;
+        }
+        
+        .section-title i {
+            margin-right: 10px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-row {
+            display: flex;
+            gap: 20px;
+        }
+        
+        .form-row .form-group {
+            flex: 1;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #555;
+        }
+        
+        input, textarea, select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+        
+        input:focus, textarea:focus, select:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.1);
+        }
+        
+        textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+        
+        /* Date input specific styles */
+        input[placeholder="dd-mm-yyyy"] {
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%23999' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3crect x='3' y='4' width='18' height='18' rx='2' ry='2'%3e%3c/rect%3e%3cline x1='16' y1='2' x2='16' y2='6'%3e%3c/line%3e%3cline x1='8' y1='2' x2='8' y2='6'%3e%3c/line%3e%3cline x1='3' y1='10' x2='21' y2='10'%3e%3c/line%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 10px center;
+            background-size: 20px;
+        }
+        
+        /* Dynamic Fields */
+        .dynamic-field {
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px dashed #ddd;
+        }
+        
+        .dynamic-field:last-child {
+            border-bottom: none;
+        }
+        
+        .add-btn, .remove-btn {
+            background-color: var(--light-color);
+            color: var(--dark-color);
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            display: inline-flex;
+            align-items: center;
+            transition: all 0.3s;
+            margin-top: 10px;
+        }
+        
+        .add-btn {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        .add-btn:hover {
+            background-color: var(--secondary-color);
+        }
+        
+        .remove-btn {
+            background-color: #ffebee;
+            color: var(--danger-color);
+        }
+        
+        .remove-btn:hover {
+            background-color: #ffcdd2;
+        }
+        
+        .add-btn i, .remove-btn i {
+            margin-right: 5px;
+        }
+        
+        /* Skills Section */
+        .skills-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .skill-tag {
+            background-color: #e3f2fd;
+            color: var(--primary-color);
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .skill-tag i {
+            margin-left: 8px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+        
+        .skill-input-container {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .skill-input-container input {
+            flex: 1;
+        }
+        
+        /* Resume Preview Styles */
+        .resume-preview {
+            width: 100%;
+            max-width: 800px;
+            background-color: white;
+            box-shadow: 0 5px 30px rgba(0, 0, 0, 0.1);
+            padding: 40px;
+            min-height: 1123px; /* A4 height at 96dpi */
+        }
+        
+        /* Modern Professional Template Styles */
+        .resume-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid var(--primary-color);
+        }
+        
+        .resume-name {
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: var(--dark-color);
+            margin-bottom: 5px;
+        }
+        
+        .resume-title {
+            font-size: 1.2rem;
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+        
+        .resume-contact {
+            text-align: right;
+        }
+        
+        .resume-contact p {
+            margin-bottom: 5px;
+            color: #555;
+        }
+        
+        .resume-section {
+            margin-bottom: 25px;
+        }
+        
+        .section-header {
+            font-size: 1.3rem;
+            color: var(--primary-color);
+            font-weight: 600;
+            margin-bottom: 10px;
+            padding-bottom: 5px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .resume-item {
+            margin-bottom: 20px;
+        }
+        
+        .item-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 5px;
+        }
+        
+        .item-title {
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+        
+        .item-subtitle {
+            color: #555;
+            margin-bottom: 5px;
+        }
+        
+        .item-date {
+            color: #777;
+            font-style: italic;
+        }
+        
+        .item-description {
+            color: #444;
+            line-height: 1.5;
+        }
+        
+        .skills-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        
+        .skill-pill {
+            background-color: #e3f2fd;
+            color: var(--primary-color);
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 14px;
+        }
+        
+        /* Responsive Styles */
+        @media (max-width: 1200px) {
+            .resume-builder {
+                flex-direction: column;
+            }
+            
+            .form-section, .preview-section {
+                max-height: none;
+                overflow-y: visible;
+            }
+            
+            .preview-section {
+                padding-top: 0;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .form-row {
+                flex-direction: column;
+                gap: 0;
+            }
+            
+            .resume-header {
+                flex-direction: column;
+            }
+            
+            .resume-contact {
+                text-align: left;
+                margin-top: 15px;
+            }
+            
+            .header-actions {
+                display: none;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .form-section, .preview-section {
+                padding: 20px;
+            }
+            
+            .resume-preview {
+                padding: 20px;
+            }
+            
+            .resume-name {
+                font-size: 1.8rem;
+            }
+        }
+        
+        /* Download Resume Button */
+        .download-resume {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 15px 0;
+            background-color: #fff3cd;
+            border: 1px solid #ffeeba;
+            border-radius: 5px;
+            margin: 30px 0;
+            text-align: center;
+        }
+        
+        .download-resume button {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .download-resume button:hover {
+            background-color: var(--secondary-color);
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <nav>
+            <a href="#" class="logo">
+                <i class="fas fa-file-alt"></i>
+                ResumeCraft
+            </a>
+            <div class="header-actions">
+                <a href="#" class="header-btn btn-outline">
+                    <i class="fas fa-save"></i> Save Draft
+                </a>
+                <a href="#" class="header-btn btn-primary">
+                    <i class="fas fa-file-download"></i> Download PDF
+                </a>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <div class="resume-builder">
+        <!-- Form Section -->
+        <section class="form-section">
+            <div class="form-container">
+                <h2 class="section-title"><i class="fas fa-edit"></i> Edit Your Resume</h2>
+                
+                <!-- Personal Information -->
+                <div class="form-group">
+                    <h3 class="section-title"><i class="fas fa-user"></i> Personal Information</h3>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="firstName">First Name</label>
+                            <input type="text" id="firstName" name="firstName" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="lastName">Last Name</label>
+                            <input type="text" id="lastName" name="lastName" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="profession">Profession/Title</label>
+                        <input type="text" id="profession" name="profession" placeholder="e.g. Software Engineer" required>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" id="email" name="email" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="phone">Phone Number</label>
+                            <input type="tel" id="phone" name="phone">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="address">Address</label>
+                        <input type="text" id="address" name="address">
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="city">City</label>
+                            <input type="text" id="city" name="city">
+                        </div>
+                        <div class="form-group">
+                            <label for="country">Country</label>
+                            <input type="text" id="country" name="country">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="summary">Professional Summary</label>
+                        <textarea id="summary" name="summary" placeholder="Briefly describe your professional background and skills"></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="linkedin">LinkedIn Profile</label>
+                        <input type="url" id="linkedin" name="linkedin" placeholder="https://linkedin.com/in/yourprofile">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="portfolio">Portfolio/Website</label>
+                        <input type="url" id="portfolio" name="portfolio" placeholder="https://yourwebsite.com">
+                    </div>
+                </div>
+                
+                <!-- Education -->
+                <div class="form-group">
+                    <h3 class="section-title"><i class="fas fa-graduation-cap"></i> Education</h3>
+                    
+                    <div id="educationFields">
+                        <div class="dynamic-field" data-index="0">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="education0.institution">Institution</label>
+                                    <input type="text" id="education0.institution" name="education[0].institution" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="education0.degree">Degree/Certificate</label>
+                                    <input type="text" id="education0.degree" name="education[0].degree" required>
+                                </div>
+                            </div>
+                            
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="education0.field">Field of Study</label>
+                                    <input type="text" id="education0.field" name="education[0].field">
+                                </div>
+                                <div class="form-group">
+                                    <label for="education0.gpa">GPA (optional)</label>
+                                    <input type="text" id="education0.gpa" name="education[0].gpa" placeholder="e.g. 3.8/4.0">
+                                </div>
+                            </div>
+                            
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="education0.startDate">Start Date</label>
+                                    <input type="text" id="education0.startDate" name="education[0].startDate" placeholder="dd-mm-yyyy" required pattern="\d{2}-\d{2}-\d{4}">
+                                </div>
+                                <div class="form-group">
+                                    <label for="education0.endDate">End Date (or expected)</label>
+                                    <input type="text" id="education0.endDate" name="education[0].endDate" placeholder="dd-mm-yyyy" required pattern="\d{2}-\d{2}-\d{4}">
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="education0.description">Description (optional)</label>
+                                <textarea id="education0.description" name="education[0].description" placeholder="Honors, awards, relevant coursework, etc."></textarea>
+                            </div>
+                            
+                            <button type="button" class="remove-btn" onclick="removeField(this)"><i class="fas fa-trash"></i> Remove Education</button>
+                        </div>
+                    </div>
+                    
+                    <button type="button" class="add-btn" onclick="addEducationField()"><i class="fas fa-plus"></i> Add Another Education</button>
+                </div>
+                
+                <!-- Work Experience -->
+                <div class="form-group">
+                    <h3 class="section-title"><i class="fas fa-briefcase"></i> Work Experience</h3>
+                    
+                    <div id="experienceFields">
+                        <div class="dynamic-field" data-index="0">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="experience0.company">Company</label>
+                                    <input type="text" id="experience0.company" name="experience[0].company" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="experience0.position">Position</label>
+                                    <input type="text" id="experience0.position" name="experience[0].position" required>
+                                </div>
+                            </div>
+                            
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="experience0.startDate">Start Date</label>
+                                    <input type="text" id="experience0.startDate" name="experience[0].startDate" placeholder="dd-mm-yyyy" required pattern="\d{2}-\d{2}-\d{4}">
+                                </div>
+                                <div class="form-group">
+                                    <label for="experience0.endDate">End Date (or present)</label>
+                                    <input type="text" id="experience0.endDate" name="experience[0].endDate" placeholder="dd-mm-yyyy" required pattern="\d{2}-\d{2}-\d{4}">
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="experience0.description">Description</label>
+                                <textarea id="experience0.description" name="experience[0].description" required placeholder="Describe your responsibilities and achievements"></textarea>
+                            </div>
+                            
+                            <button type="button" class="remove-btn" onclick="removeField(this)"><i class="fas fa-trash"></i> Remove Experience</button>
+                        </div>
+                    </div>
+                    
+                    <button type="button" class="add-btn" onclick="addExperienceField()"><i class="fas fa-plus"></i> Add Another Experience</button>
+                </div>
+                
+                <!-- Skills -->
+                <div class="form-group">
+                    <h3 class="section-title"><i class="fas fa-code"></i> Skills</h3>
+                    
+                    <div class="form-group">
+                        <label>Technical Skills</label>
+                        <div class="skill-input-container">
+                            <input type="text" id="skillInput" placeholder="e.g. JavaScript, Photoshop, Data Analysis">
+                            <button type="button" class="btn btn-next" onclick="addSkill()">Add</button>
+                        </div>
+                        <div class="skills-container" id="technicalSkills">
+                            <!-- Skills will be added here -->
+                        </div>
+                        <input type="hidden" id="technicalSkillsList" name="technicalSkills">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Soft Skills</label>
+                        <div class="skill-input-container">
+                            <input type="text" id="softSkillInput" placeholder="e.g. Communication, Leadership, Teamwork">
+                            <button type="button" class="btn btn-next" onclick="addSoftSkill()">Add</button>
+                        </div>
+                        <div class="skills-container" id="softSkills">
+                            <!-- Skills will be added here -->
+                        </div>
+                        <input type="hidden" id="softSkillsList" name="softSkills">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="languages">Languages</label>
+                        <div class="skill-input-container">
+                            <input type="text" id="languageInput" placeholder="e.g. English (Fluent), Spanish (Intermediate)">
+                            <button type="button" class="btn btn-next" onclick="addLanguage()">Add</button>
+                        </div>
+                        <div class="skills-container" id="languagesList">
+                            <!-- Languages will be added here -->
+                        </div>
+                        <input type="hidden" id="languages" name="languages">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="tools">Tools & Technologies</label>
+                        <div class="skill-input-container">
+                            <input type="text" id="toolInput" placeholder="e.g. VS Code, Git, Photoshop">
+                            <button type="button" class="btn btn-next" onclick="addTool()">Add</button>
+                        </div>
+                        <div class="skills-container" id="toolsList">
+                            <!-- Tools will be added here -->
+                        </div>
+                        <input type="hidden" id="tools" name="tools">
+                    </div>
+                </div>
+                
+                <!-- Projects -->
+                <div class="form-group">
+                    <h3 class="section-title"><i class="fas fa-project-diagram"></i> Projects</h3>
+                    
+                    <div id="projectFields">
+                        <div class="dynamic-field" data-index="0">
+                            <div class="form-group">
+                                <label for="project0.name">Project Name</label>
+                                <input type="text" id="project0.name" name="project[0].name" required>
+                            </div>
+                            
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="project0.startDate">Start Date</label>
+                                    <input type="text" id="project0.startDate" name="project[0].startDate" placeholder="dd-mm-yyyy" pattern="\d{2}-\d{2}-\d{4}">
+                                </div>
+                                <div class="form-group">
+                                    <label for="project0.endDate">End Date</label>
+                                    <input type="text" id="project0.endDate" name="project[0].endDate" placeholder="dd-mm-yyyy" pattern="\d{2}-\d{2}-\d{4}">
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="project0.url">Project URL (optional)</label>
+                                <input type="url" id="project0.url" name="project[0].url" placeholder="https://">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="project0.description">Description</label>
+                                <textarea id="project0.description" name="project[0].description" required placeholder="Describe the project, your role, technologies used, and outcomes"></textarea>
+                            </div>
+                            
+                            <button type="button" class="remove-btn" onclick="removeField(this)"><i class="fas fa-trash"></i> Remove Project</button>
+                        </div>
+                    </div>
+                    
+                    <button type="button" class="add-btn" onclick="addProjectField()"><i class="fas fa-plus"></i> Add Another Project</button>
+                </div>
+                
+                <!-- Achievements -->
+                <div class="form-group">
+                    <h3 class="section-title"><i class="fas fa-trophy"></i> Achievements</h3>
+                    
+                    <div id="achievementFields">
+                        <div class="dynamic-field" data-index="0">
+                            <div class="form-group">
+                                <label for="achievement0.title">Achievement Title</label>
+                                <input type="text" id="achievement0.title" name="achievement[0].title" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="achievement0.date">Date (optional)</label>
+                                <input type="text" id="achievement0.date" name="achievement[0].date" placeholder="dd-mm-yyyy" pattern="\d{2}-\d{2}-\d{4}">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="achievement0.description">Description</label>
+                                <textarea id="achievement0.description" name="achievement[0].description" required placeholder="Describe your achievement and its significance"></textarea>
+                            </div>
+                            
+                            <button type="button" class="remove-btn" onclick="removeField(this)"><i class="fas fa-trash"></i> Remove Achievement</button>
+                        </div>
+                    </div>
+                    
+                    <button type="button" class="add-btn" onclick="addAchievementField()"><i class="fas fa-plus"></i> Add Another Achievement</button>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Preview Section -->
+        <section class="preview-section">
+            <div class="resume-preview" id="resumePreview">
+                <!-- Resume preview will be rendered here -->
+                <div class="resume-header">
+                    <div>
+                        <h1 class="resume-name" id="previewName">Your Name</h1>
+                        <h2 class="resume-title" id="previewTitle">Profession/Title</h2>
+                    </div>
+                    <div class="resume-contact">
+                        <p id="previewEmail">email@example.com</p>
+                        <p id="previewPhone">(123) 456-7890</p>
+                        <p id="previewAddress">City, Country</p>
+                        <p id="previewLinkedIn">linkedin.com/in/yourprofile</p>
+                    </div>
+                </div>
+                
+                <div class="resume-section">
+                    <h3 class="section-header">Professional Summary</h3>
+                    <p class="item-description" id="previewSummary">Briefly describe your professional background and skills.</p>
+                </div>
+                
+                <div class="resume-section">
+                    <h3 class="section-header">Education</h3>
+                    <div id="previewEducation">
+                        <!-- Education items will be added here -->
+                        <div class="resume-item">
+                            <div class="item-header">
+                                <span class="item-title">Institution Name</span>
+                                <span class="item-date">Start - End Date</span>
+                            </div>
+                            <div class="item-subtitle">Degree/Certificate in Field of Study</div>
+                            <p class="item-description">Description of your education.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="resume-section">
+                    <h3 class="section-header">Work Experience</h3>
+                    <div id="previewExperience">
+                        <!-- Experience items will be added here -->
+                        <div class="resume-item">
+                            <div class="item-header">
+                                <span class="item-title">Company Name</span>
+                                <span class="item-date">Start - End Date</span>
+                            </div>
+                            <div class="item-subtitle">Position Title</div>
+                            <p class="item-description">Description of your responsibilities and achievements.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="resume-section">
+                    <h3 class="section-header">Skills</h3>
+                    <div class="skills-list" id="previewSkills">
+                        <!-- Skills will be added here -->
+                        <span class="skill-pill">Sample Skill</span>
+                    </div>
+                </div>
+                
+                <div class="resume-section">
+                    <h3 class="section-header">Projects</h3>
+                    <div id="previewProjects">
+                        <!-- Projects will be added here -->
+                        <div class="resume-item">
+                            <div class="item-header">
+                                <span class="item-title">Project Name</span>
+                                <span class="item-date">Start - End Date</span>
+                            </div>
+                            <p class="item-description">Description of the project, your role, technologies used, and outcomes.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="resume-section">
+                    <h3 class="section-header">Achievements</h3>
+                    <div id="previewAchievements">
+                        <!-- Achievements will be added here -->
+                        <div class="resume-item">
+                            <div class="item-header">
+                                <span class="item-title">Achievement Title</span>
+                                <span class="item-date">Date</span>
+                            </div>
+                            <p class="item-description">Description of your achievement and its significance.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <div class="download-resume">
+        <a href="Downloadpage.html">
+            <button>Download Resume →</button>
+        </a>
+    </div>
+
+    <script>
+        // ====== FORM FIELD MANAGEMENT ====== //
+        // Add Education Field
+        function addEducationField() {
+            const container = document.getElementById('educationFields');
+            const index = container.children.length;
+            
+            const fieldHTML = `
+                <div class="dynamic-field" data-index="${index}">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="education${index}.institution">Institution</label>
+                            <input type="text" id="education${index}.institution" name="education[${index}].institution" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="education${index}.degree">Degree/Certificate</label>
+                            <input type="text" id="education${index}.degree" name="education[${index}].degree" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="education${index}.field">Field of Study</label>
+                            <input type="text" id="education${index}.field" name="education[${index}].field">
+                        </div>
+                        <div class="form-group">
+                            <label for="education${index}.gpa">GPA (optional)</label>
+                            <input type="text" id="education${index}.gpa" name="education[${index}].gpa" placeholder="e.g. 3.8/4.0">
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="education${index}.startDate">Start Date</label>
+                            <input type="text" id="education${index}.startDate" name="education[${index}].startDate" placeholder="dd-mm-yyyy" required pattern="\d{2}-\d{2}-\d{4}">
+                        </div>
+                        <div class="form-group">
+                            <label for="education${index}.endDate">End Date (or expected)</label>
+                            <input type="text" id="education${index}.endDate" name="education[${index}].endDate" placeholder="dd-mm-yyyy" required pattern="\d{2}-\d{2}-\d{4}">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="education${index}.description">Description (optional)</label>
+                        <textarea id="education${index}.description" name="education[${index}].description" placeholder="Honors, awards, relevant coursework, etc."></textarea>
+                    </div>
+                    
+                    <button type="button" class="remove-btn" onclick="removeField(this)"><i class="fas fa-trash"></i> Remove Education</button>
+                </div>
+            `;
+            
+            container.insertAdjacentHTML('beforeend', fieldHTML);
+            
+            // Add event listeners to new date inputs
+            const newDateInputs = container.lastElementChild.querySelectorAll('input[placeholder="dd-mm-yyyy"]');
+            newDateInputs.forEach(input => {
+                input.addEventListener('input', function() {
+                    formatDateInput(this);
+                    updatePreview();
+                });
+            });
+            
+            // Add event listeners to other inputs
+            const inputs = container.lastElementChild.querySelectorAll('input, textarea');
+            inputs.forEach(input => {
+                input.addEventListener('input', updatePreview);
+            });
+        }
+        
+        // Add Experience Field
+        function addExperienceField() {
+            const container = document.getElementById('experienceFields');
+            const index = container.children.length;
+            
+            const fieldHTML = `
+                <div class="dynamic-field" data-index="${index}">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="experience${index}.company">Company</label>
+                            <input type="text" id="experience${index}.company" name="experience[${index}].company" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="experience${index}.position">Position</label>
+                            <input type="text" id="experience${index}.position" name="experience[${index}].position" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="experience${index}.startDate">Start Date</label>
+                            <input type="text" id="experience${index}.startDate" name="experience[${index}].startDate" placeholder="dd-mm-yyyy" required pattern="\d{2}-\d{2}-\d{4}">
+                        </div>
+                        <div class="form-group">
+                            <label for="experience${index}.endDate">End Date (or present)</label>
+                            <input type="text" id="experience${index}.endDate" name="experience[${index}].endDate" placeholder="dd-mm-yyyy" required pattern="\d{2}-\d{2}-\d{4}">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="experience${index}.description">Description</label>
+                        <textarea id="experience${index}.description" name="experience[${index}].description" required placeholder="Describe your responsibilities and achievements"></textarea>
+                    </div>
+                    
+                    <button type="button" class="remove-btn" onclick="removeField(this)"><i class="fas fa-trash"></i> Remove Experience</button>
+                </div>
+            `;
+            
+            container.insertAdjacentHTML('beforeend', fieldHTML);
+            
+            // Add event listeners to new date inputs
+            const newDateInputs = container.lastElementChild.querySelectorAll('input[placeholder="dd-mm-yyyy"]');
+            newDateInputs.forEach(input => {
+                input.addEventListener('input', function() {
+                    formatDateInput(this);
+                    updatePreview();
+                });
+            });
+            
+            // Add event listeners to other inputs
+            const inputs = container.lastElementChild.querySelectorAll('input, textarea');
+            inputs.forEach(input => {
+                input.addEventListener('input', updatePreview);
+            });
+        }
+        
+        // Add Project Field
+        function addProjectField() {
+            const container = document.getElementById('projectFields');
+            const index = container.children.length;
+            
+            const fieldHTML = `
+                <div class="dynamic-field" data-index="${index}">
+                    <div class="form-group">
+                        <label for="project${index}.name">Project Name</label>
+                        <input type="text" id="project${index}.name" name="project[${index}].name" required>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="project${index}.startDate">Start Date</label>
+                            <input type="text" id="project${index}.startDate" name="project[${index}].startDate" placeholder="dd-mm-yyyy" pattern="\d{2}-\d{2}-\d{4}">
+                        </div>
+                        <div class="form-group">
+                            <label for="project${index}.endDate">End Date</label>
+                            <input type="text" id="project${index}.endDate" name="project[${index}].endDate" placeholder="dd-mm-yyyy" pattern="\d{2}-\d{2}-\d{4}">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="project${index}.url">Project URL (optional)</label>
+                        <input type="url" id="project${index}.url" name="project[${index}].url" placeholder="https://">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="project${index}.description">Description</label>
+                        <textarea id="project${index}.description" name="project[${index}].description" required placeholder="Describe the project, your role, technologies used, and outcomes"></textarea>
+                    </div>
+                    
+                    <button type="button" class="remove-btn" onclick="removeField(this)"><i class="fas fa-trash"></i> Remove Project</button>
+                </div>
+            `;
+            
+            container.insertAdjacentHTML('beforeend', fieldHTML);
+            
+            // Add event listeners to new date inputs
+            const newDateInputs = container.lastElementChild.querySelectorAll('input[placeholder="dd-mm-yyyy"]');
+            newDateInputs.forEach(input => {
+                input.addEventListener('input', function() {
+                    formatDateInput(this);
+                    updatePreview();
+                });
+            });
+            
+            // Add event listeners to other inputs
+            const inputs = container.lastElementChild.querySelectorAll('input, textarea');
+            inputs.forEach(input => {
+                input.addEventListener('input', updatePreview);
+            });
+        }
+        
+        // Add Achievement Field
+        function addAchievementField() {
+            const container = document.getElementById('achievementFields');
+            const index = container.children.length;
+            
+            const fieldHTML = `
+                <div class="dynamic-field" data-index="${index}">
+                    <div class="form-group">
+                        <label for="achievement${index}.title">Achievement Title</label>
+                        <input type="text" id="achievement${index}.title" name="achievement[${index}].title" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="achievement${index}.date">Date (optional)</label>
+                        <input type="text" id="achievement${index}.date" name="achievement[${index}].date" placeholder="dd-mm-yyyy" pattern="\d{2}-\d{2}-\d{4}">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="achievement${index}.description">Description</label>
+                        <textarea id="achievement${index}.description" name="achievement[${index}].description" required placeholder="Describe your achievement and its significance"></textarea>
+                    </div>
+                    
+                    <button type="button" class="remove-btn" onclick="removeField(this)"><i class="fas fa-trash"></i> Remove Achievement</button>
+                </div>
+            `;
+            
+            container.insertAdjacentHTML('beforeend', fieldHTML);
+            
+            // Add event listeners to new date inputs
+            const newDateInputs = container.lastElementChild.querySelectorAll('input[placeholder="dd-mm-yyyy"]');
+            newDateInputs.forEach(input => {
+                input.addEventListener('input', function() {
+                    formatDateInput(this);
+                    updatePreview();
+                });
+            });
+            
+            // Add event listeners to other inputs
+            const inputs = container.lastElementChild.querySelectorAll('input, textarea');
+            inputs.forEach(input => {
+                input.addEventListener('input', updatePreview);
+            });
+        }
+        
+        // Remove Field
+        function removeField(button) {
+            const field = button.closest('.dynamic-field');
+            field.remove();
+            
+            // Re-index remaining fields
+            const container = field.parentElement;
+            const fields = container.querySelectorAll('.dynamic-field');
+            
+            fields.forEach((field, index) => {
+                field.setAttribute('data-index', index);
+                
+                // Update all input names and IDs
+                const inputs = field.querySelectorAll('input, textarea, select');
+                inputs.forEach(input => {
+                    const name = input.getAttribute('name').replace(/\[\d+\]/, `[${index}]`);
+                    const id = input.getAttribute('id').replace(/\d+/, index);
+                    
+                    input.setAttribute('name', name);
+                    input.setAttribute('id', id);
+                });
+            });
+            
+            updatePreview();
+        }
+        
+        // ====== SKILLS MANAGEMENT ====== //
+        function addSkill() {
+            const input = document.getElementById('skillInput');
+            const skill = input.value.trim();
+            
+            if (skill) {
+                const container = document.getElementById('technicalSkills');
+                const skillHTML = `
+                    <div class="skill-tag">
+                        ${skill}
+                        <i class="fas fa-times" onclick="removeSkill(this)"></i>
+                    </div>
+                `;
+                
+                container.insertAdjacentHTML('beforeend', skillHTML);
+                updateSkillsList();
+                input.value = '';
+                updatePreview();
+            }
+        }
+        
+        function addSoftSkill() {
+            const input = document.getElementById('softSkillInput');
+            const skill = input.value.trim();
+            
+            if (skill) {
+                const container = document.getElementById('softSkills');
+                const skillHTML = `
+                    <div class="skill-tag">
+                        ${skill}
+                        <i class="fas fa-times" onclick="removeSkill(this)"></i>
+                    </div>
+                `;
+                
+                container.insertAdjacentHTML('beforeend', skillHTML);
+                updateSoftSkillsList();
+                input.value = '';
+                updatePreview();
+            }
+        }
+        
+        function addLanguage() {
+            const input = document.getElementById('languageInput');
+            const language = input.value.trim();
+            
+            if (language) {
+                const container = document.getElementById('languagesList');
+                const languageHTML = `
+                    <div class="skill-tag">
+                        ${language}
+                        <i class="fas fa-times" onclick="removeSkill(this)"></i>
+                    </div>
+                `;
+                
+                container.insertAdjacentHTML('beforeend', languageHTML);
+                updateLanguagesList();
+                input.value = '';
+                updatePreview();
+            }
+        }
+        
+        function addTool() {
+            const input = document.getElementById('toolInput');
+            const tool = input.value.trim();
+            
+            if (tool) {
+                const container = document.getElementById('toolsList');
+                const toolHTML = `
+                    <div class="skill-tag">
+                        ${tool}
+                        <i class="fas fa-times" onclick="removeSkill(this)"></i>
+                    </div>
+                `;
+                
+                container.insertAdjacentHTML('beforeend', toolHTML);
+                updateToolsList();
+                input.value = '';
+                updatePreview();
+            }
+        }
+        
+        function removeSkill(icon) {
+            const skillTag = icon.closest('.skill-tag');
+            skillTag.remove();
+            
+            // Update the appropriate hidden input
+            if (skillTag.parentElement.id === 'technicalSkills') {
+                updateSkillsList();
+            } else if (skillTag.parentElement.id === 'softSkills') {
+                updateSoftSkillsList();
+            } else if (skillTag.parentElement.id === 'languagesList') {
+                updateLanguagesList();
+            } else if (skillTag.parentElement.id === 'toolsList') {
+                updateToolsList();
+            }
+            
+            updatePreview();
+        }
+        
+        function updateSkillsList() {
+            const container = document.getElementById('technicalSkills');
+            const skills = Array.from(container.querySelectorAll('.skill-tag')).map(tag => 
+                tag.textContent.trim().replace('×', '').trim()
+            );
+            
+            document.getElementById('technicalSkillsList').value = skills.join(', ');
+        }
+        
+        function updateSoftSkillsList() {
+            const container = document.getElementById('softSkills');
+            const skills = Array.from(container.querySelectorAll('.skill-tag')).map(tag => 
+                tag.textContent.trim().replace('×', '').trim()
+            );
+            
+            document.getElementById('softSkillsList').value = skills.join(', ');
+        }
+        
+        function updateLanguagesList() {
+            const container = document.getElementById('languagesList');
+            const languages = Array.from(container.querySelectorAll('.skill-tag')).map(tag => 
+                tag.textContent.trim().replace('×', '').trim()
+            );
+            
+            document.getElementById('languages').value = languages.join(', ');
+        }
+        
+        function updateToolsList() {
+            const container = document.getElementById('toolsList');
+            const tools = Array.from(container.querySelectorAll('.skill-tag')).map(tag => 
+                tag.textContent.trim().replace('×', '').trim()
+            );
+            
+            document.getElementById('tools').value = tools.join(', ');
+        }
+        
+        // Allow adding skills by pressing Enter
+        document.getElementById('skillInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                addSkill();
+            }
+        });
+        
+        document.getElementById('softSkillInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                addSoftSkill();
+            }
+        });
+        
+        document.getElementById('languageInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                addLanguage();
+            }
+        });
+        
+        document.getElementById('toolInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                addTool();
+            }
+        });
+        
+        // ====== DATE HANDLING ====== //
+        function formatDateInput(input) {
+            // Remove any non-digit characters
+            let value = input.value.replace(/\D/g, '');
+            
+            // Add dashes automatically
+            if (value.length > 2) {
+                value = value.substring(0, 2) + '-' + value.substring(2);
+            }
+            if (value.length > 5) {
+                value = value.substring(0, 5) + '-' + value.substring(5, 9); // Limit to 4 digits for year
+            }
+            
+            input.value = value;
+        }
+        
+        // Add event listeners to all date inputs
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('input[placeholder="dd-mm-yyyy"]').forEach(input => {
+                input.addEventListener('input', function() {
+                    formatDateInput(this);
+                });
+                
+                input.addEventListener('blur', function() {
+                    // Validate the date format
+                    if (this.value && !/^\d{2}-\d{2}-\d{4}$/.test(this.value)) {
+                        this.setCustomValidity('Please enter date in dd-mm-yyyy format');
+                    } else {
+                        this.setCustomValidity('');
+                    }
+                });
+            });
+        });
+        
+        // ====== LIVE PREVIEW UPDATES ====== //
+        function updatePreview() {
+            // Personal Information
+            const firstName = document.getElementById('firstName').value || 'Your';
+            const lastName = document.getElementById('lastName').value || 'Name';
+            document.getElementById('previewName').textContent = `${firstName} ${lastName}`;
+            
+            document.getElementById('previewTitle').textContent = document.getElementById('profession').value || 'Profession/Title';
+            document.getElementById('previewEmail').textContent = document.getElementById('email').value || 'email@example.com';
+            document.getElementById('previewPhone').textContent = document.getElementById('phone').value || '(123) 456-7890';
+            
+            const city = document.getElementById('city').value;
+            const country = document.getElementById('country').value;
+            document.getElementById('previewAddress').textContent = city && country ? `${city}, ${country}` : 'City, Country';
+            
+            const linkedin = document.getElementById('linkedin').value;
+            document.getElementById('previewLinkedIn').textContent = linkedin ? linkedin.replace('https://', '').replace('www.', '') : 'linkedin.com/in/yourprofile';
+            
+            document.getElementById('previewSummary').textContent = document.getElementById('summary').value || 'Briefly describe your professional background and skills.';
+            
+            // Education
+            const educationContainer = document.getElementById('previewEducation');
+            educationContainer.innerHTML = '';
+            
+            const educationFields = document.querySelectorAll('#educationFields .dynamic-field');
+            educationFields.forEach((field, index) => {
+                const institution = field.querySelector(`#education${index}.institution`).value || 'Institution Name';
+                const degree = field.querySelector(`#education${index}.degree`).value || 'Degree/Certificate';
+                const fieldOfStudy = field.querySelector(`#education${index}.field`).value;
+                const startDate = field.querySelector(`#education${index}.startDate`).value || 'Start Date';
+                const endDate = field.querySelector(`#education${index}.endDate`).value || 'End Date';
+                const description = field.querySelector(`#education${index}.description`).value || 'Description of your education.';
+                
+                const educationHTML = `
+                    <div class="resume-item">
+                        <div class="item-header">
+                            <span class="item-title">${institution}</span>
+                            <span class="item-date">${startDate} - ${endDate}</span>
+                        </div>
+                        <div class="item-subtitle">${degree}${fieldOfStudy ? ` in ${fieldOfStudy}` : ''}</div>
+                        <p class="item-description">${description}</p>
+                    </div>
+                `;
+                
+                educationContainer.insertAdjacentHTML('beforeend', educationHTML);
+            });
+            
+            // Experience
+            const experienceContainer = document.getElementById('previewExperience');
+            experienceContainer.innerHTML = '';
+            
+            const experienceFields = document.querySelectorAll('#experienceFields .dynamic-field');
+            experienceFields.forEach((field, index) => {
+                const company = field.querySelector(`#experience${index}.company`).value || 'Company Name';
+                const position = field.querySelector(`#experience${index}.position`).value || 'Position Title';
+                const startDate = field.querySelector(`#experience${index}.startDate`).value || 'Start Date';
+                const endDate = field.querySelector(`#experience${index}.endDate`).value || 'End Date';
+                const description = field.querySelector(`#experience${index}.description`).value || 'Description of your responsibilities and achievements.';
+                
+                const experienceHTML = `
+                    <div class="resume-item">
+                        <div class="item-header">
+                            <span class="item-title">${company}</span>
+                            <span class="item-date">${startDate} - ${endDate}</span>
+                        </div>
+                        <div class="item-subtitle">${position}</div>
+                        <p class="item-description">${description}</p>
+                    </div>
+                `;
+                
+                experienceContainer.insertAdjacentHTML('beforeend', experienceHTML);
+            });
+            
+            // Skills
+            const skillsContainer = document.getElementById('previewSkills');
+            skillsContainer.innerHTML = '';
+            
+            // Add technical skills
+            const technicalSkills = Array.from(document.querySelectorAll('#technicalSkills .skill-tag')).map(tag => 
+                tag.textContent.trim().replace('×', '').trim()
+            );
+            
+            // Add soft skills
+            const softSkills = Array.from(document.querySelectorAll('#softSkills .skill-tag')).map(tag => 
+                tag.textContent.trim().replace('×', '').trim()
+            );
+            
+            // Add languages
+            const languages = Array.from(document.querySelectorAll('#languagesList .skill-tag')).map(tag => 
+                tag.textContent.trim().replace('×', '').trim()
+            );
+            
+            // Add tools
+            const tools = Array.from(document.querySelectorAll('#toolsList .skill-tag')).map(tag => 
+                tag.textContent.trim().replace('×', '').trim()
+            );
+            
+            // Combine all skills
+            const allSkills = [...technicalSkills, ...softSkills, ...languages, ...tools];
+            
+            // Add to preview
+            allSkills.forEach(skill => {
+                if (skill) {
+                    const skillHTML = `<span class="skill-pill">${skill}</span>`;
+                    skillsContainer.insertAdjacentHTML('beforeend', skillHTML);
+                }
+            });
+            
+            // Projects
+            const projectsContainer = document.getElementById('previewProjects');
+            projectsContainer.innerHTML = '';
+            
+            const projectFields = document.querySelectorAll('#projectFields .dynamic-field');
+            projectFields.forEach((field, index) => {
+                const name = field.querySelector(`#project${index}.name`).value || 'Project Name';
+                const startDate = field.querySelector(`#project${index}.startDate`).value || 'Start Date';
+                const endDate = field.querySelector(`#project${index}.endDate`).value || 'End Date';
+                const url = field.querySelector(`#project${index}.url`).value;
+                const description = field.querySelector(`#project${index}.description`).value || 'Description of the project, your role, technologies used, and outcomes.';
+                
+                const projectHTML = `
+                    <div class="resume-item">
+                        <div class="item-header">
+                            <span class="item-title">${name}</span>
+                            <span class="item-date">${startDate} - ${endDate}</span>
+                        </div>
+                        ${url ? `<div class="item-subtitle"><a href="${url}" target="_blank">${url}</a></div>` : ''}
+                        <p class="item-description">${description}</p>
+                    </div>
+                `;
+                
+                projectsContainer.insertAdjacentHTML('beforeend', projectHTML);
+            });
+            
+            // Achievements
+            const achievementsContainer = document.getElementById('previewAchievements');
+            achievementsContainer.innerHTML = '';
+            
+            const achievementFields = document.querySelectorAll('#achievementFields .dynamic-field');
+            achievementFields.forEach((field, index) => {
+                const title = field.querySelector(`#achievement${index}.title`).value || 'Achievement Title';
+                const date = field.querySelector(`#achievement${index}.date`).value || 'Date';
+                const description = field.querySelector(`#achievement${index}.description`).value || 'Description of your achievement and its significance.';
+                
+                const achievementHTML = `
+                    <div class="resume-item">
+                        <div class="item-header">
+                            <span class="item-title">${title}</span>
+                            <span class="item-date">${date}</span>
+                        </div>
+                        <p class="item-description">${description}</p>
+                    </div>
+                `;
+                
+                achievementsContainer.insertAdjacentHTML('beforeend', achievementHTML);
+            });
+        }
+        
+        // Initialize the preview
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add event listeners to all form inputs
+            const inputs = document.querySelectorAll('input, textarea');
+            inputs.forEach(input => {
+                input.addEventListener('input', updatePreview);
+            });
+            
+            // Initial preview update
+            updatePreview();
+            
+            // Add initial fields if none exist
+            if (document.querySelectorAll('#educationFields .dynamic-field').length === 0) {
+                addEducationField();
+            }
+            if (document.querySelectorAll('#experienceFields .dynamic-field').length === 0) {
+                addExperienceField();
+            }
+            if (document.querySelectorAll('#projectFields .dynamic-field').length === 0) {
+                addProjectField();
+            }
+            if (document.querySelectorAll('#achievementFields .dynamic-field').length === 0) {
+                addAchievementField();
+            }
+        });
+    </script>
+</body>
+<!-- Add Download Resume button at the bottom -->
+<a href="Downloadpage.html">
+  <button>Download Resume →</button>
+</a>
+</html>

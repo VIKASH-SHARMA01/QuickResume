@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ResumeCraft | Choose Your Template</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Global Styles */
+        :root {
+            --primary-color: #4361ee;
+            --secondary-color: #3f37c9;
+            --accent-color: #4cc9f0;
+            --light-color: #f8f9fa;
+            --dark-color: #212529;
+            --success-color: #4bb543;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7ff;
+            color: var(--dark-color);
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Header Styles */
+        header {
+            padding: 20px 0;
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+        
+        .logo i {
+            margin-right: 10px;
+            font-size: 28px;
+        }
+        
+        /* Main Content */
+        .main-content {
+            margin-top: 100px;
+            padding: 40px 0;
+        }
+        
+        .page-title {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .page-title h1 {
+            font-size: 2.5rem;
+            color: var(--dark-color);
+            margin-bottom: 15px;
+        }
+        
+        .page-title p {
+            font-size: 1.1rem;
+            color: #666;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        
+        /* Template Grid */
+        .template-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 30px;
+            margin-bottom: 50px;
+        }
+        
+        .template-card {
+            background-color: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .template-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+        }
+        
+        .template-card.selected {
+            border: 3px solid var(--primary-color);
+        }
+        
+        .template-preview {
+            height: 450px;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .template-preview img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        
+        .template-card:hover .template-preview img {
+            transform: scale(1.05);
+        }
+        
+        .template-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(67, 97, 238, 0.7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .template-card:hover .template-overlay {
+            opacity: 1;
+        }
+        
+        .preview-btn {
+            background-color: white;
+            color: var(--primary-color);
+            border: none;
+            padding: 12px 25px;
+            border-radius: 5px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            transition: all 0.3s;
+        }
+        
+        .preview-btn i {
+            margin-right: 8px;
+        }
+        
+        .preview-btn:hover {
+            background-color: #f0f0f0;
+        }
+        
+        .template-info {
+            padding: 20px;
+        }
+        
+        .template-info h3 {
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+            color: var(--dark-color);
+        }
+        
+        .template-info p {
+            color: #666;
+            margin-bottom: 15px;
+        }
+        
+        .template-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 15px;
+        }
+        
+        .template-tag {
+            background-color: #e3f2fd;
+            color: var(--primary-color);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+        
+        .select-btn {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 5px;
+            background-color: var(--light-color);
+            color: var(--dark-color);
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .select-btn.selected {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        .select-btn:hover:not(.selected) {
+            background-color: #e0e0e0;
+        }
+        
+        /* Template Preview Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            z-index: 2000;
+            overflow-y: auto;
+        }
+        
+        .modal-content {
+            background-color: white;
+            margin: 50px auto;
+            max-width: 900px;
+            border-radius: 10px;
+            overflow: hidden;
+            animation: modalFadeIn 0.3s ease;
+        }
+        
+        @keyframes modalFadeIn {
+            from { opacity: 0; transform: translateY(-50px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .modal-header {
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .modal-header h2 {
+            font-size: 1.5rem;
+            color: var(--dark-color);
+        }
+        
+        .close-modal {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #999;
+            transition: color 0.3s;
+        }
+        
+        .close-modal:hover {
+            color: var(--dark-color);
+        }
+        
+        .modal-body {
+            padding: 20px;
+        }
+        
+        .modal-template {
+            width: 100%;
+            height: auto;
+            max-height: 80vh;
+            object-fit: contain;
+        }
+        
+        .modal-footer {
+            padding: 20px;
+            display: flex;
+            justify-content: flex-end;
+            border-top: 1px solid #eee;
+        }
+        
+        .use-template-btn {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 5px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .use-template-btn:hover {
+            background-color: var(--secondary-color);
+        }
+        
+        /* Action Buttons */
+        .action-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 40px;
+        }
+        
+        .btn {
+            padding: 15px 30px;
+            border-radius: 5px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 1rem;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+        }
+        
+        .btn i {
+            margin-right: 8px;
+        }
+        
+        .btn-outline {
+            background-color: transparent;
+            border: 2px solid var(--primary-color);
+            color: var(--primary-color);
+        }
+        
+        .btn-outline:hover {
+            background-color: rgba(67, 97, 238, 0.1);
+        }
+        
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+            border: 2px solid var(--primary-color);
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--secondary-color);
+            border-color: var(--secondary-color);
+        }
+        
+        /* Responsive Styles */
+        @media (max-width: 992px) {
+            .template-grid {
+                grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            }
+            
+            .template-preview {
+                height: 400px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .main-content {
+                margin-top: 80px;
+            }
+            
+            .page-title h1 {
+                font-size: 2rem;
+            }
+            
+            .modal-content {
+                margin: 20px auto;
+                width: 95%;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .template-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+            }
+            
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <nav>
+                <a href="#" class="logo">
+                    <i class="fas fa-file-alt"></i>
+                    ResumeCraft
+                </a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="container">
+            <div class="page-title">
+                <h1>Choose Your Resume Template</h1>
+                <p>Select a professional template that matches your style and industry. You can preview each template before making your selection.</p>
+            </div>
+            
+            <!-- Template Grid -->
+            <div class="template-grid">
+                <!-- Template 1 -->
+                <div class="template-card" data-template="1">
+                    <div class="template-preview">
+                        <img src="https://resumegenius.com/wp-content/uploads/Modern-Professional-Resume-Template.jpg" alt="Modern Professional Template">
+                        <div class="template-overlay">
+                            <button class="preview-btn" onclick="openModal(1)">
+                                <i class="fas fa-expand"></i> Preview
+                            </button>
+                        </div>
+                    </div>
+                    <div class="template-info">
+                        <h3>Modern Professional</h3>
+                        <p>Clean, contemporary design perfect for corporate and professional roles.</p>
+                        <div class="template-tags">
+                            <span class="template-tag">Corporate</span>
+                            <span class="template-tag">ATS Friendly</span>
+                            <span class="template-tag">Minimalist</span>
+                        </div>
+                        <button class="select-btn" onclick="selectTemplate(1)">Select Template</button>
+                    </div>
+                </div>
+                
+                <!-- Template 2 -->
+                <div class="template-card" data-template="2">
+                    <div class="template-preview">
+                        <img src="https://zety.com/images/resume-templates/modern-1.jpg" alt="Creative Template">
+                        <div class="template-overlay">
+                            <button class="preview-btn" onclick="openModal(2)">
+                                <i class="fas fa-expand"></i> Preview
+                            </button>
+                        </div>
+                    </div>
+                    <div class="template-info">
+                        <h3>Creative</h3>
+                        <p>Bold and colorful design ideal for designers, artists, and creatives.</p>
+                        <div class="template-tags">
+                            <span class="template-tag">Creative</span>
+                            <span class="template-tag">Colorful</span>
+                            <span class="template-tag">Unique</span>
+                        </div>
+                        <button class="select-btn" onclick="selectTemplate(2)">Select Template</button>
+                    </div>
+                </div>
+                
+                <!-- Template 3 -->
+                <div class="template-card" data-template="3">
+                    <div class="template-preview">
+                        <img src="https://cdn-images.zety.com/images/zety/landings/templates/berlin@3x.png" alt="Executive Template">
+                        <div class="template-overlay">
+                            <button class="preview-btn" onclick="openModal(3)">
+                                <i class="fas fa-expand"></i> Preview
+                            </button>
+                        </div>
+                    </div>
+                    <div class="template-info">
+                        <h3>Executive</h3>
+                        <p>Elegant and sophisticated layout for senior-level professionals.</p>
+                        <div class="template-tags">
+                            <span class="template-tag">Executive</span>
+                            <span class="template-tag">Formal</span>
+                            <span class="template-tag">Elegant</span>
+                        </div>
+                        <button class="select-btn" onclick="selectTemplate(3)">Select Template</button>
+                    </div>
+                </div>
+                
+                <!-- Template 4 -->
+                <div class="template-card" data-template="4">
+                    <div class="template-preview">
+                        <img src="https://cdn-images.zety.com/images/zety/landings/templates/new-york@3x.png" alt="Simple Template">
+                        <div class="template-overlay">
+                            <button class="preview-btn" onclick="openModal(4)">
+                                <i class="fas fa-expand"></i> Preview
+                            </button>
+                        </div>
+                    </div>
+                    <div class="template-info">
+                        <h3>Simple & Clean</h3>
+                        <p>Straightforward layout that works well for all industries.</p>
+                        <div class="template-tags">
+                            <span class="template-tag">Simple</span>
+                            <span class="template-tag">Clean</span>
+                            <span class="template-tag">Versatile</span>
+                        </div>
+                        <button class="select-btn" onclick="selectTemplate(4)">Select Template</button>
+                    </div>
+                </div>
+                
+                <!-- Template 5 -->
+                <div class="template-card" data-template="5">
+                    <div class="template-preview">
+                        <img src="https://cdn-images.zety.com/images/zety/landings/templates/tokyo@3x.png" alt="Modern Template">
+                        <div class="template-overlay">
+                            <button class="preview-btn" onclick="openModal(5)">
+                                <i class="fas fa-expand"></i> Preview
+                            </button>
+                        </div>
+                    </div>
+                    <div class="template-info">
+                        <h3>Modern</h3>
+                        <p>Sleek design with contemporary styling for tech and modern industries.</p>
+                        <div class="template-tags">
+                            <span class="template-tag">Modern</span>
+                            <span class="template-tag">Tech</span>
+                            <span class="template-tag">Stylish</span>
+                        </div>
+                        <button class="select-btn" onclick="selectTemplate(5)">Select Template</button>
+                    </div>
+                </div>
+                
+                <!-- Template 6 -->
+                <div class="template-card" data-template="6">
+                    <div class="template-preview">
+                        <img src="https://cdn-images.zety.com/images/zety/landings/templates/milan@3x.png" alt="Academic Template">
+                        <div class="template-overlay">
+                            <button class="preview-btn" onclick="openModal(6)">
+                                <i class="fas fa-expand"></i> Preview
+                            </button>
+                        </div>
+                    </div>
+                    <div class="template-info">
+                        <h3>Academic</h3>
+                        <p>Structured format ideal for academic and research positions.</p>
+                        <div class="template-tags">
+                            <span class="template-tag">Academic</span>
+                            <span class="template-tag">Research</span>
+                            <span class="template-tag">Detailed</span>
+                        </div>
+                        <button class="select-btn" onclick="selectTemplate(6)">Select Template</button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Action Buttons -->
+            <div class="action-buttons">
+                <a href="#" class="btn btn-outline">
+                    <i class="fas fa-arrow-left"></i> Back to Editor
+                </a>
+                <a href="Livepriview.html">
+                  <button>Next: Choose Template →</button>
+                </a>
+            </div>
+        </div>
+    </main>
+
+    <!-- Template Preview Modal -->
+    <div class="modal" id="templateModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalTemplateTitle">Modern Professional Template</h2>
+                <button class="close-modal" onclick="closeModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <img src="" alt="Template Preview" class="modal-template" id="modalTemplateImage">
+            </div>
+            <div class="modal-footer">
+                <button class="use-template-btn" onclick="useTemplate()">
+                    Use This Template
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Selected template variable
+        let selectedTemplate = null;
+        
+        // Template data
+        const templates = {
+            1: {
+                name: "Modern Professional",
+                image: "https://resumegenius.com/wp-content/uploads/Modern-Professional-Resume-Template.jpg",
+                tags: ["Corporate", "ATS Friendly", "Minimalist"]
+            },
+            2: {
+                name: "Creative",
+                image: "https://zety.com/images/resume-templates/modern-1.jpg",
+                tags: ["Creative", "Colorful", "Unique"]
+            },
+            3: {
+                name: "Executive",
+                image: "https://cdn-images.zety.com/images/zety/landings/templates/berlin@3x.png",
+                tags: ["Executive", "Formal", "Elegant"]
+            },
+            4: {
+                name: "Simple & Clean",
+                image: "https://cdn-images.zety.com/images/zety/landings/templates/new-york@3x.png",
+                tags: ["Simple", "Clean", "Versatile"]
+            },
+            5: {
+                name: "Modern",
+                image: "https://cdn-images.zety.com/images/zety/landings/templates/tokyo@3x.png",
+                tags: ["Modern", "Tech", "Stylish"]
+            },
+            6: {
+                name: "Academic",
+                image: "https://cdn-images.zety.com/images/zety/landings/templates/milan@3x.png",
+                tags: ["Academic", "Research", "Detailed"]
+            }
+        };
+        
+        // Select template function
+        function selectTemplate(templateId) {
+            // Remove selected class from all cards
+            document.querySelectorAll('.template-card').forEach(card => {
+                card.classList.remove('selected');
+            });
+            
+            // Remove selected class from all buttons
+            document.querySelectorAll('.select-btn').forEach(btn => {
+                btn.classList.remove('selected');
+                btn.textContent = "Select Template";
+            });
+            
+            // Add selected class to chosen card and button
+            const selectedCard = document.querySelector(`.template-card[data-template="${templateId}"]`);
+            const selectedBtn = selectedCard.querySelector('.select-btn');
+            
+            selectedCard.classList.add('selected');
+            selectedBtn.classList.add('selected');
+            selectedBtn.textContent = "Selected";
+            
+            // Set the selected template
+            selectedTemplate = templateId;
+            
+            // Show continue button
+            document.getElementById('continueBtn').style.display = "inline-flex";
+            
+            // Update continue button href
+            document.getElementById('continueBtn').href = `resume-editor.html?template=${templateId}`;
+        }
+        
+        // Open modal function
+        function openModal(templateId) {
+            const modal = document.getElementById('templateModal');
+            const template = templates[templateId];
+            
+            // Set modal content
+            document.getElementById('modalTemplateTitle').textContent = template.name;
+            document.getElementById('modalTemplateImage').src = template.image;
+            
+            // Show modal
+            modal.style.display = "block";
+            
+            // Store template ID in modal for selection
+            modal.setAttribute('data-current-template', templateId);
+        }
+        
+        // Close modal function
+        function closeModal() {
+            document.getElementById('templateModal').style.display = "none";
+        }
+        
+        // Use template from modal
+        function useTemplate() {
+            const modal = document.getElementById('templateModal');
+            const templateId = modal.getAttribute('data-current-template');
+            
+            // Select the template
+            selectTemplate(templateId);
+            
+            // Close the modal
+            closeModal();
+        }
+        
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const modal = document.getElementById('templateModal');
+            if (event.target == modal) {
+                closeModal();
+            }
+        }
+        
+        // Close modal with ESC key
+        document.addEventListener('keydown', function(event) {
+            if (event.key === "Escape") {
+                closeModal();
+            }
+        });
+    </script>
+</body>
+</html>
